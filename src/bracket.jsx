@@ -1,6 +1,32 @@
 
 import "./bracket.css"
+import {readRemoteFile} from 'react-papaparse'
+import React, { useState } from 'react';
+
+
+  
 export default function Bracket() {
+    
+   
+    
+    const [data, setData] = useState([]);
+    const getName = (row) => {
+        return String(data[row][3])
+    }
+    const handleReadRemoteFile = () => {
+        if (data.length === 0){
+            readRemoteFile("/away.csv", {
+                complete: (results) => {
+                  console.log('---------------------------');
+                  console.log('Results:', results);
+                  console.log('---------------------------');
+                  setData(results.data)
+                },
+              });
+        }
+        
+      };
+    handleReadRemoteFile()
     return (
         <div className="flex-1 flex flex-row mg-5">
             <div className="flex-inital w-8"></div>
@@ -9,7 +35,7 @@ export default function Bracket() {
             <ul className="round round-1">
                 <li className="spacer">&nbsp;</li>
                 
-                <li className="game game-top winner">Lousville <span>79</span></li>
+                <li className="game game-top winner"> { getName(1) } <span>79</span></li>
                 <li className="game game-spacer-left">&nbsp;</li>
                 <li className="game game-bottom ">NC A&T <span>48</span></li>
         

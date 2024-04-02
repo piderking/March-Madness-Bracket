@@ -4,17 +4,19 @@ function getRandomScore() {
   }
 export function Scoreboard() {
     
-    const [gameNumber, setGameNumber] = useState(1);
+    const [gameNumber, setGameNumber] = useState(0);
 
     const playGame = () =>{
-        if (gameNumber >= 7){
-            setGameNumber(0)   
+        setGameNumber(gameNumber + 1)
+        if (gameNumber > 7){
+            setGameNumber(1)   
             home.wins = 0
             away.wins = 0
         }
         console.log("Simulate Game #" + gameNumber)
         away.score = getRandomScore()
-        home.score = getRandomScore()
+        home.score = getRandomScore() * 1.5
+
         if (away.score > home.score){
             away.wins += 1
         } else if (home.score > away.score){
@@ -22,12 +24,11 @@ export function Scoreboard() {
         } 
 
         if (home.wins >= 4 || away.wins >= 4){
-            setGameNumber(1)   
+            setGameNumber(0)   
             home.wins = 0
             away.wins = 0
             console.log("Home or AWay Won!")
         }
-        setGameNumber(gameNumber + 1)
         
         
         
@@ -63,14 +64,14 @@ export function Scoreboard() {
             <div className="flex-inital w-12"></div>
             <div className="flex-1 flex flex-row">
                 <div className="flex-1"></div>
-                <div className="flex-inital w-96 flex flex-col ">
+                <div className="flex-3 flex flex-col ">
                     <div className="flex-1 text-center flex flex-col">
                         <div className="flex-1"></div>
                         <div className="flex-1">
                             <p>Game { gameNumber } — {getStatus()}</p>
                         </div>
                     </div>
-                    <div className="flex-4 bg-slate-700 text-white text-center flex flex-col">
+                    <div className="flex-4 bg-slate-700 rounded-2xl text-white text-center flex flex-col">
                         <div className="flex-1"></div>
                         <div className="flex-2 flex flex-row">
                             <div className="flex-2"></div>
@@ -84,20 +85,20 @@ export function Scoreboard() {
                             <div className="flex-2"></div>
                         </div>
                         
-                        <div className="flex-4 flex flex-row">
+                        <div className="flex-3 flex flex-row">
                             <div className="flex-1"></div>
-                            <div className="flex-2 flex flex-col text-center bg-black rounded-xl text-orange-600 font-scoreboard">
+                            <div className="flex-inital w-24 flex flex-col text-center bg-black rounded-xl text-orange-600 font-scoreboard">
                             <div className="flex-1"></div>
                             <div className="flex-1">
-                                <p className="text-5xl">{ away.score }</p>
+                                <p className="text-4xl">{ away.score }</p>
                             </div>
                             <div className="flex-1"></div>
                             </div>
                             <div className="flex-1"></div>
-                            <div className="flex-2 flex flex-col text-center bg-black rounded-xl text-orange-600 font-scoreboard">
+                            <div className="flex-inital w-24 flex flex-col text-center bg-black rounded-xl text-orange-600 font-scoreboard">
                             <div className="flex-1"></div>
                             <div className="flex-1">
-                                <p className="text-5xl">{ home.score }</p>
+                                <p className="text-4xl">{ home.score }</p>
                             </div>
                             <div className="flex-1"></div>
                             </div>
@@ -110,9 +111,7 @@ export function Scoreboard() {
                 <div className="flex-1"></div>
             </div>
             <div className="flex-inital w-12"></div>
-            <div className="flex-2 bg-slate-500">
-                <button onClick={playGame}>Play Game</button>
-            </div>
+            
 
         </div>
     )
