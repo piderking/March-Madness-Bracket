@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: "score-board";
+    src: url("../public/score-board.ttf");
+  }
