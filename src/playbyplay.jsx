@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
-const plays = [{team: "Sunshiners", text: "You're my sunshisdsunshisdsunshisdsund shisdsunshisdsunshisdn!"}, {team: "Sunshiners", text: "You're my sunshin!"}]
+import React, { useState, useEffect } from 'react';
 
+export const plays = [{team: "Sunshiners", text: "You're my sunshisdsunshisdsunshisdsund shisdsunshisdsunshisdn!"}, {team: "Sunshiners", text: "You're my sunshin!"}]
+export function addPlay(team, name, text){
+
+}
 
 const ParentComponent = ({ children }) => {
     return (
@@ -10,7 +13,7 @@ const ParentComponent = ({ children }) => {
     )
   }
   
-  const Play = ({ children, pos}) => {
+  const Play = ({ _children, pos}) => {
     return <div className='flex-1 flex flex-col mt-4'>
             <div className="flex-1 ml-8 text-left text-blue-600">{plays[pos].team}</div>
             <div className="flex-2 ml-8 text-left text-wrap" >{plays[pos].text} </div>
@@ -18,10 +21,11 @@ const ParentComponent = ({ children }) => {
   }
 
 
-export function Playbyplay(){
+export function Playbyplay({_children, home, away}){
     const [hidden, setHidden] = useState(false)
     const [numChildren, setNumChildren] = useState(0)
-    
+    const [count, setCount] = useState(0); // setInterval Stuffy
+
     const children = []
 
     for (let i = 0; i < numChildren; i++) {
@@ -39,6 +43,21 @@ export function Playbyplay(){
         setHidden(!hidden)
         console.log(children)
     }
+
+    useEffect(() => {
+        //Implementing the setInterval method
+        const interval = setInterval(() => {
+            setCount(count + 1);
+                if (plays.length > children.length ){
+                    addComponent() // If there's more plays then add them
+                }
+
+        }, 1000);
+ 
+        //Clearing the interval
+        return () => clearInterval(interval);
+    }, [count]);
+    
     return (
         <>
             <div className="">
@@ -49,13 +68,9 @@ export function Playbyplay(){
             
             <div className={  hidden ? 'hidden ' : ' '  +  "flex-inital w-96 bg-slate-100  overflow-y-auto"}>
                 <div className='flex flex-col-reverse bottom-8 absolute '>
-                    <div className="flex-inital h-8">
-                        
-                    </div>
                     <ParentComponent addComponent={addComponent}>{children}</ParentComponent>
                 
                 </div>
-                <button className='ml-8 bg-slate-300 bottom-2 absolute'  onClick={addComponent}>Add another component</button>
             </div>
             
         </>

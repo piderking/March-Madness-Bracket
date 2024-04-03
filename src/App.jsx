@@ -2,14 +2,30 @@ import Bracket from "./bracket"
 import {Scoreboard} from "./scoreboard"
 import {Playbyplay} from "./playbyplay"
 import { useState } from "react"
+
+
+function getRandomScore() {
+  return Math.floor(Math.random() * 100);
+}
+
 export default function App() {
   const [home, setHome] = useState({
     name: "Lebrawns",
-    score:0,
+    score:getRandomScore(),
+    twoPointers:0,
+    twoPointerAttempts:0,
+    threePointers:0,
+    threePointerAttempts:0,
+    turnovers:0,
   }) 
   const [away, setAway] = useState({
     name: "Away Lebrawns",
-    score:0,
+    score:getRandomScore(),
+    twoPointers:0,
+    twoPointerAttempts:0,
+    threePointers:0,
+    threePointerAttempts:0,
+    turnovers:0,
   }) 
   return (
     <div className="h-screen flex flex-row">
