@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-export const plays = [{team: "Sunshiners", text: "You're my sunshisdsunshisdsunshisdsund shisdsunshisdsunshisdn!"}, {team: "Sunshiners", text: "You're my sunshin!"}]
-export function addPlay(team, name, text){
-
+export const plays = {
+    data: [],
+    clearPlays() {
+        this.data.splice(0, this.data.length);
+      }
 }
+
 
 const ParentComponent = ({ children }) => {
     return (
@@ -15,8 +18,8 @@ const ParentComponent = ({ children }) => {
   
   const Play = ({ _children, pos}) => {
     return <div className='flex-1 flex flex-col mt-4'>
-            <div className="flex-1 ml-8 text-left text-blue-600">{plays[pos].team}</div>
-            <div className="flex-2 ml-8 text-left text-wrap" >{plays[pos].text} </div>
+            <div className="flex-1 ml-8 text-left text-blue-600">{plays.data[pos].team}</div>
+            <div className="flex-2 ml-8 text-left text-wrap" >{plays.data[pos].text} </div>
         </div>
   }
 
@@ -26,14 +29,16 @@ export function Playbyplay({_children, home, away}){
     const [numChildren, setNumChildren] = useState(0)
     const [count, setCount] = useState(0); // setInterval Stuffy
 
-    const children = []
+    let children = []
 
     for (let i = 0; i < numChildren; i++) {
-        children.push(<Play key={i} number={i} pos={i} />)
+        if (plays.data.length > children.length){
+            children.push(<Play key={i} number={i} pos={i} />)
+        }
     }
 
     const addComponent = () => {
-        if (numChildren > plays.length - 1 ){
+        if (numChildren > plays.data.length - 1 ){
             console.log("No more plays to add.")
         }else {setNumChildren((count) => count + 1)}
         
@@ -48,9 +53,15 @@ export function Playbyplay({_children, home, away}){
         //Implementing the setInterval method
         const interval = setInterval(() => {
             setCount(count + 1);
-                if (plays.length > children.length ){
+                
+                if (plays.data.length === 0 && children.length > 0){
+                    children = []
+                    setNumChildren(0)
+                }
+                if (plays.data.length > children.length ){
                     addComponent() // If there's more plays then add them
                 }
+                console.log("Plays " + plays.data.length + " Children " + children.length )
 
         }, 1000);
  

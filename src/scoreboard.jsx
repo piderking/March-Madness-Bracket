@@ -37,7 +37,7 @@ export function Scoreboard({children, home, away}) {
                             <div className="flex-1"></div>
                             <div className="flex-1 flex flex-col">
                                 <div className="flex-1"></div>
-                                <div className="flex-2 text-l">{away.name}</div>
+                                <div className="flex-inital pb-[2vh] text-[3vh]">{away.name}</div>
                                 <div className="flex-inital h-24 bg-slate-900 rounded-md flex flex-col ">
                                     <div className="flex-1"></div>
                                     <div className="flex-1 text-orange-600 text-[5vh] font-scoreboard">{away.score}</div>
@@ -51,7 +51,7 @@ export function Scoreboard({children, home, away}) {
                             <div className="flex-1"></div>
                             <div className="flex-1 flex flex-col">
                                 <div className="flex-1"></div>
-                                <div className="flex-2 text-l">{home.name}</div>
+                                <div className="flex-inital pb-[2vh] text-[3vh]">{home.name}</div>
                                 <div className="flex-inital h-24 bg-slate-900 rounded-md flex flex-col ">
                                     <div className="flex-1"></div>
                                     <div className="flex-1 text-orange-600 text-[5vh] font-scoreboard">{home.score}</div>
