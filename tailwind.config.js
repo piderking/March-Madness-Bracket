@@ -6,6 +6,7 @@ module.exports = {
   theme: {
     fontFamily: {
       scoreboard: ["score-board", "sans-serif"],
+      roboto: ["Roboto", "sans-serif"],
     },
     extend: {
       flex: {
