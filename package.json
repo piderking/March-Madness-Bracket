@@ -1,6 +1,7 @@
 {
   "name": "march",
   "version": "0.1.0",
+  "homepage": "https://piderking.github.io/March-Madness-Bracket",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
