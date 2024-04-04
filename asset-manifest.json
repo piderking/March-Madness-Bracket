@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/March-Madness-Bracket/static/css/main.f17bf460.css",
-    "main.js": "/March-Madness-Bracket/static/js/main.cea7173b.js",
+    "main.js": "/March-Madness-Bracket/static/js/main.ba105266.js",
     "static/media/score-board.ttf": "/March-Madness-Bracket/static/media/score-board.da0f8a9407b64807f084.ttf",
     "index.html": "/March-Madness-Bracket/index.html",
     "main.f17bf460.css.map": "/March-Madness-Bracket/static/css/main.f17bf460.css.map",
-    "main.cea7173b.js.map": "/March-Madness-Bracket/static/js/main.cea7173b.js.map"
+    "main.ba105266.js.map": "/March-Madness-Bracket/static/js/main.ba105266.js.map"
   },
   "entrypoints": [
     "static/css/main.f17bf460.css",
-    "static/js/main.cea7173b.js"
+    "static/js/main.ba105266.js"
   ]
 }
