@@ -215,24 +215,48 @@ export default function App() {
               
               <div className="flex-1"></div>
               <div className="flex-1 flex flex-row">
+                <div className="flex-1"></div>
                 <div className="flex-1">
-                  <button onClick={startGame} className="rounded-md bg-slate-200 p-2" >{'Run'}</button>
+                  <button onClick={startGame} className="bg-slate-200 mr-2 p-2 btn" >{'Run'}</button>
+                  <button onClick={reset} className="p-2 btn ml-2 mr-2">{'Reset'}</button>
                 </div>
                 <div className="flex-1">
-                  <button onClick={reset} className="rounded-md bg-slate-200 p-2">{'Reset'}</button>
 
                 </div>
                 
               </div>
-              <div className="flex-1 text-left flex flex-col bg-slate-400 rounded-md">
-                <label className="ml-2 pr-2 pt-2 flex-1">
-                  Away: 
-                  <input id="awayTeam" onChange={e => {changeTeam(false, e.target.value)}} className=" bg-slate-200 w-80 rounded-sm"/>
-                </label>
-                <hr />
-                <label className="pr-2 ml-2 mt-1 flex-1">
-                  Home: 
-                  <input id="homeTeam"onChange={e => {changeTeam(true, e.target.value)}} className=" bg-slate-200 w-80 rounded-sm" />
+              <div className="flex-1 text-left flex flex-col rounded-md">
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text">What is the Away Team's Name?</span>
+                </div>
+                <select onChange={e => {changeTeam(false, e.target.value)}} className="select select-bordered w-80 h-12 max-w-xs">
+                  <option disabled selected>Pick the Away Team</option>
+                  <option>UConn</option>
+                  <option>Purdue</option>
+                  <option>Tennessee</option>
+                  <option>Illinois</option>
+                  <option>Alabama</option>
+                  <option>Duke</option>
+                  <option>Clemson</option>
+                  <option>NC State</option>
+                </select>
+              </label>
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text">What is the Home Team's Name?</span>
+                  </div>
+                  <select onChange={e => {changeTeam(true, e.target.value)}} className="select select-bordered w-80 h-12 max-w-xs">
+                    <option disabled selected>Pick the Home Team</option>
+                    <option>UConn</option>
+                    <option>Purdue</option>
+                    <option>Tennessee</option>
+                    <option>Illinois</option>
+                    <option>Alabama</option>
+                    <option>Duke</option>
+                    <option>Clemson</option>
+                    <option>NC State</option>
+                  </select>
                 </label>
               </div>
             </div>
@@ -295,8 +319,6 @@ export default function App() {
     
         </div>
         <Playbyplay home={home} away={away} />
-        
-      
 
 
     </div>
