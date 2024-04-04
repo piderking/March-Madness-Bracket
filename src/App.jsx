@@ -64,6 +64,8 @@ export default function App() {
       turnovers: 0,
       FGM: 0,
       FGA: 0,
+      TPM: 0,
+      TPA: 0,
       FTM: 0,
       FTA: 0,
       drebounds: 0,
@@ -96,6 +98,8 @@ export default function App() {
       turnovers: 0,
       FGM: 0,
       FGA: 0,
+      TPM: 0,
+      TPA: 0,
       FTM: 0,
       FTA: 0,
       drebounds: 0,
@@ -240,28 +244,30 @@ export default function App() {
               <div className="flex-inital w-[45vw]  flex flex-row outline rounded-2xl outline-slate-300 outline-[1px]">
                     <div className="flex-1 text-left flex pl-3 flex-col">
                     <p className=" flex-inital h-6 text-l font-roboto pt-3 pl-6 font-medium text-md">{away.name}</p>
-                      <div className="flex-inital h-6"></div>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{home.stats.FGM}/{home.stats.FGA}</p>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
                       <div className="flex-inital h-4"></div>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{away.stats.FGM}/{away.stats.FGA}</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{away.stats.TPM}/{away.stats.TPA}</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{away.stats.FTM}/{away.stats.FTA}</p>
+                      <div className="flex-inital h-4"></div>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{away.stats.orebounds}</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{away.stats.drebounds}</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{away.stats.assists}</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{away.stats.blocks}</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{away.stats.steals}</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{away.stats.turnovers}</p>
                     </div>
                     <div className="flex-1 text-center flex flex-col ">
                       <p className=" flex-inital h-6 text-l font-roboto pt-3 font-medium text-md">TEAM STATS</p>
-                      <div className="flex-inital h-6"></div>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">Feild Goal%</p>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">3 Point%</p>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">Free Throw%</p>
                       <div className="flex-inital h-4"></div>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">Offensive Rebound%</p>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">Defensive Rebound%</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">Field Goals</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">3 Pointers</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">Free Throws</p>
+                      <div className="flex-inital h-4"></div>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">Offensive Rebounds</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">Defensive Rebounds</p>
                       <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">Assists</p>
                       <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">Blocks</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">Steals</p>
                       <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">Turnovers</p>
 
                       
@@ -269,17 +275,18 @@ export default function App() {
                       
                     </div>
                     <div className="flex-1 text-right pr-3 flex flex-col">
-                    <p className=" flex-inital h-6 text-l font-roboto pt-3 font-medium text-md pr-6">{home.name}</p>
+                    <p className=" flex-inital h-4 text-l font-roboto pt-3 font-medium text-md pr-6">{home.name}</p>
                       <div className="flex-inital h-6"></div>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{home.stats.FGM}/{home.stats.FGA}</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{home.stats.TPM}/{home.stats.TPA}</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{home.stats.FTM}/{home.stats.FTA}</p>
                       <div className="flex-inital h-4"></div>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{home.stats.orebounds}</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{home.stats.drebounds}</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{home.stats.assists}</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{home.stats.blocks}</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{home.stats.steals}</p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{home.stats.turnovers}</p>
                     </div>
               </div>
               <div className="flex-1"></div>

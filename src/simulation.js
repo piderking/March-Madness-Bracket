@@ -15,11 +15,11 @@ function simFT(bstats, times) {
         let ftm = prob(bstats["FT%"] * 100)
         if (ftm) {
             // TODO Replace console.log with this structure and make nice and prettier 
-            plays.data.push({team: bstats["School"], text: `Team made free throw ${i} of ${times}` })
+            plays.data.push({ team: bstats["School"], text: `made free throw ${i} of ${times}` })
             FTstats.FTM += 1
             FTstats.pts += 1
         } else {
-            plays.data.push({team: bstats["School"], text: `missed the free throw ${i} of ${times}` })
+            plays.data.push({ team: bstats["School"], text: `missed free throw ${i} of ${times}` })
         }
     }
     return FTstats
@@ -27,24 +27,27 @@ function simFT(bstats, times) {
 
 function simPossession([ot, otadv], [dt, dtadv]) {
     // each teams stats in this possession
-    let ostats = { points: 0, orebounds: 0, assists: 0, turnovers: 0, FGM: 0, FGA: 0, FTM: 0, FTA: 0 }
+    let ostats = { points: 0, orebounds: 0, assists: 0, turnovers: 0, FGM: 0, FGA: 0, TPM: 0, TPA: 0, FTM: 0, FTA: 0 }
     let dstats = { drebounds: 0, steals: 0, blocks: 0, pf: 0 }
 
     // amount of passes made during possesion
-    let passes = random(0, 3)
+    let passes = random(0, 4)
 
     // chance to turnover during possesion
-    let tov = prob(otadv["TOV%"] + passes)
+    let tov = prob(otadv["TOV%"] + passes - 5)
     if (tov) { // ball turned over
         ostats.turnovers += 1
-        dstats.steals += 1
-        console.log(`${ot["School"]} turned the ball over`)
-        console.log(`${dt["School"]} stole the ball`)
+        plays.data.push({ team: ot["School"], text: "turns the ball over" })
+        let stl = prob(50)
+        if (stl) {
+            dstats.steals += 1
+            plays.data.push({ team: dt["School"], text: "steals the ball" })
+        }
         return [ostats, dstats]
     }
 
     // probability to shoot 2 or 3
-    let fga3 = prob(otadv["3PAr"] * 100)
+    let fga3 = prob((otadv["3PAr"] * 100) - 2)
 
     // calculate if shot was made + fouls
     let fgm, pts
@@ -52,21 +55,22 @@ function simPossession([ot, otadv], [dt, dtadv]) {
     ostats.FGA += 1
     let foul = false
     if (!fga3) { // 2pt FGA
-        console.log(`${ot["School"]} attempts a 2`)
+        plays.data.push({ team: ot["School"], text: "takes a shot from the field" })
 
         // chance for shot to be blocked
         blk = prob(dtadv["BLK%"])
         if (blk) {
             dstats.blocks += 1
-            console.log(`${dt["School"]} blocked the shot`)
+            plays.data.push({ team: dt["School"], text: "blocks the shot" })
             return [ostats, dstats]
         }
 
         fgm = prob(ot["FG%"] * 100)
         pts = 2
-        foul = prob((2 / otadv["FTr"]) * 2)
+        foul = prob((2 / otadv["FTr"]) * 4)
     } else { // 3pt FGA
-        console.log(`${ot["School"]} attempts a 3`)
+        ostats.TPA += 1
+        plays.data.push({ team: ot["School"], text: "takes a shot from beyond the arc" })
 
         fgm = prob(ot["3P%"] * 100)
         pts = 3
@@ -75,15 +79,16 @@ function simPossession([ot, otadv], [dt, dtadv]) {
     // if shot was made or missed...
     if (fgm) { // field goal made
         ostats.FGM += 1
+        if (pts === 3) ostats.TPM += 1
         if (foul) {
             dstats.pf += 1
-            console.log(`${ot["School"]} made the shot and got fouled`)
+            plays.data.push({ team: ot["School"], text: "makes the shot and gets fouled" })
             let { FTM, FTA, pts } = simFT(ot, 1)
             ostats.FTM += FTM
             ostats.FTA += FTA
             ostats.points += pts
         } else {
-            console.log(`${ot["School"]} made the shot`)
+            plays.data.push({ team: ot["School"], text: "makes the shot" })
         }
         // find assists
         if (passes >= 1) {
@@ -99,26 +104,34 @@ function simPossession([ot, otadv], [dt, dtadv]) {
     } else { // field goal missed
         if (foul) {
             dstats.pf += 1
-            console.log(`${ot["School"]} missed the shot and got fouled`)
+            plays.data.push({ team: ot["School"], text: "misses the shot and gets fouled" })
             let { FTM, FTA, pts } = simFT(ot, 2)
             ostats.FTM += FTM
             ostats.FTA += FTA
             ostats.points += pts
             // return [ostats, dstats]
     } else {
-            console.log(`${ot["School"]} missed the shot`)
+            plays.data.push({ team: ot["School"], text: "misses the shot" })
+        }
+
+        // out of bounds
+        let oob = prob(5)
+        if (oob) {
+            ostats.turnovers += 1
+            plays.data.push({ team: ot["School"], text: "ball goes out of bounds" })
+            return [ostats, dstats]
         }
 
         // add offensive rebounds
         orb = prob(otadv["ORB%"])
         if (orb) {
-            console.log(`${ot["School"]} got the rebound`)
+            plays.data.push({ team: ot["School"], text: "gets the rebound" })
             let [ros, rds] = simPossession([ot, otadv], [dt, dtadv])
             ros.orebounds += 1
             return [ros, rds]
         } else {
             dstats.drebounds += 1
-            console.log(`${dt["School"]} got the rebound`)    
+            plays.data.push({ team: dt["School"], text: "gets the rebound" })
         }
 
         return [ostats, dstats]
@@ -172,6 +185,8 @@ export function simGame([t1, t1adv,], [t2, t2adv]) { // each team's normal and a
         turnovers: 0,
         FGM: 0,
         FGA: 0,
+        TPM: 0,
+        TPA: 0,
         FTM: 0,
         FTA: 0,
         drebounds: 0,
@@ -187,6 +202,8 @@ export function simGame([t1, t1adv,], [t2, t2adv]) { // each team's normal and a
         turnovers: 0,
         FGM: 0,
         FGA: 0,
+        TPM: 0,
+        TPA: 0,
         FTM: 0,
         FTA: 0,
         drebounds: 0,
@@ -195,9 +212,7 @@ export function simGame([t1, t1adv,], [t2, t2adv]) { // each team's normal and a
         pf: 0
     }
     
-    console.log("Start of first half")
-    console.log("Tipoff")
-    console.log(`${t1["School"]} has possession`)
+    plays.data.push({ team: "Start of first half", text: `${t1["School"]} gets possession` })
 
     for (let pos = 0; pos <= totalPosessions; pos++) {   
         if (pos % 2 === 1) { // Team 1
@@ -208,6 +223,8 @@ export function simGame([t1, t1adv,], [t2, t2adv]) { // each team's normal and a
             t1stats.turnovers += os.turnovers
             t1stats.FGM += os.FGM
             t1stats.FGA += os.FGA
+            t1stats.TPM += os.TPM
+            t1stats.TPA += os.TPA
             t1stats.FTM += os.FTM
             t1stats.FTA += os.FTA
             t2stats.drebounds += ds.drebounds
@@ -222,6 +239,8 @@ export function simGame([t1, t1adv,], [t2, t2adv]) { // each team's normal and a
             t2stats.turnovers += os.turnovers
             t2stats.FGM += os.FGM
             t2stats.FGA += os.FGA
+            t2stats.TPM += os.TPM
+            t2stats.TPA += os.TPA
             t2stats.FTM += os.FTM
             t2stats.FTA += os.FTA
             t1stats.drebounds += ds.drebounds
@@ -229,15 +248,14 @@ export function simGame([t1, t1adv,], [t2, t2adv]) { // each team's normal and a
             t1stats.blocks += ds.blocks
             t1stats.pf += ds.pf
         }
-        if (pos === totalPosessions/20) {
-            console.log("End of first half")
-            console.log("Start of second half")
-            console.log(`${t2["School"]} has possession`)
+        if (pos === totalPosessions/2) {
+            plays.data.push({ team: "End of first half", text: "" })
+            plays.data.push({ team: "Start of second half", text: `${t1["School"]} gets possession` })
         }
     }
 
-    console.log("End of second half")
-   
+    plays.data.push({ team: "End of second half", text: "" })
+
     return [t1stats, t2stats, totalPosessions]
 }
 
