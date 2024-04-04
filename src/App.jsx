@@ -6,7 +6,8 @@ import {readRemoteFile} from 'react-papaparse'
 import { simGame } from "./simulation"
 
 import { plays } from './playbyplay'
-
+const url = './March-Madness-Bracket/data.csv'
+//const url = './data.csv'
 const order = {
   "UConn":0,
   "Purdue":1,
@@ -25,7 +26,7 @@ let val = 5
 export default function App() {
 
   const handleBasicFiles = () => {
-    readRemoteFile('./March-Madness-Bracket/data.csv', {
+    readRemoteFile(url, {
     complete: (results) => {
     
       setHome(previousState => {
@@ -57,7 +58,18 @@ export default function App() {
         "ORB%": 25.0
       }
     },
-    data:{      
+    stats:{    
+      orebounds: 0,
+      assists: 0,
+      turnovers: 0,
+      FGM: 0,
+      FGA: 0,
+      FTM: 0,
+      FTA: 0,
+      drebounds: 0,
+      steals: 0,
+      blocks: 0,
+      pf: 0  
     }
   }) 
   const [away, setAway] = useState({
@@ -78,7 +90,19 @@ export default function App() {
         "TOV%": 12.0,
         "ORB%": 25.0
       }
-    },
+    },stats: {
+      orebounds: 0,
+      assists: 0,
+      turnovers: 0,
+      FGM: 0,
+      FGA: 0,
+      FTM: 0,
+      FTA: 0,
+      drebounds: 0,
+      steals: 0,
+      blocks: 0,
+      pf: 0
+    }
   }) 
   useEffect(()=>{
     // Run Once
@@ -93,7 +117,7 @@ export default function App() {
       console.log("Unknown")
       return
     }
-    readRemoteFile('./March-Madness-Bracket/data.csv', {
+    readRemoteFile(url, {
       complete: (results) => {
         plays.clearPlays()
         if(isHome){
@@ -217,7 +241,7 @@ export default function App() {
                     <div className="flex-1 text-left flex pl-3 flex-col">
                     <p className=" flex-inital h-6 text-l font-roboto pt-3 pl-6 font-medium text-md">{away.name}</p>
                       <div className="flex-inital h-6"></div>
-                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
+                      <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs">{home.stats.FGM}/{home.stats.FGA}</p>
                       <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
                       <p className=" flex-inital h-4 text-l font-roboto pt-3 text-xs"></p>
                       <div className="flex-inital h-4"></div>
