@@ -1,3 +1,5 @@
+import { plays } from './playbyplay'
+
 function random(min, max) { // assumes equally likely
     return Math.floor(Math.random() * max) + min
 }
@@ -12,11 +14,12 @@ function simFT(bstats, times) {
         FTstats.FTA += 1
         let ftm = prob(bstats["FT%"] * 100)
         if (ftm) {
-            console.log(`${bstats["School"]} made free throw ${i} of ${times}`)
+            // TODO Replace console.log with this structure and make nice and prettier 
+            plays.data.push({team: bstats["School"], text: `Team made free throw ${i} of ${times}` })
             FTstats.FTM += 1
             FTstats.pts += 1
         } else {
-            console.log(`${bstats["School"]} missed free throw ${i} of ${times}`)
+            plays.data.push({team: bstats["School"], text: `missed the free throw ${i} of ${times}` })
         }
     }
     return FTstats
@@ -45,6 +48,7 @@ function simPossession([ot, otadv], [dt, dtadv]) {
 
     // calculate if shot was made + fouls
     let fgm, pts
+    let blk, ast, orb
     ostats.FGA += 1
     let foul = false
     if (!fga3) { // 2pt FGA
@@ -234,6 +238,6 @@ export function simGame([t1, t1adv,], [t2, t2adv]) { // each team's normal and a
 
     console.log("End of second half")
    
-    return [t1stats, t2stats]
+    return [t1stats, t2stats, totalPosessions]
 }
 

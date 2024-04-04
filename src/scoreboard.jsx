@@ -28,7 +28,7 @@ export function Scoreboard({children, home, away}) {
                     <div className="flex-1 text-center text-[2vh]">
                         Possessions
                         <br />
-                        {home.data.posessions}/{home.data.total_posessions}
+                        {home.total_posessions}
                     </div>
                     <div className="flex-1"></div>
                 </div>

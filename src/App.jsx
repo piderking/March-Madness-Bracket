@@ -41,6 +41,7 @@ export default function App() {
     name: "",
     row:1,
     score:99,
+    total_posessions:0,
     values:{
       basic: {
         "FG%": .500,
@@ -49,14 +50,14 @@ export default function App() {
       }, advanced: {
         "Pace": 75.0,
         "3PAr": .400,
+        "FTr": .375,
         "AST%":50.0,
         "BLK%":8.0,
         "TOV%": 12.0,
+        "ORB%": 25.0
       }
     },
-    data:{
-      posessions:0,
-      total_posessions:0,
+    data:{      
     }
   }) 
   const [away, setAway] = useState({
@@ -71,9 +72,11 @@ export default function App() {
       }, advanced: {
         "Pace": 75.0,
         "3PAr": .400,
+        "FTr": .375,
         "AST%":50.0,
         "BLK%":8.0,
         "TOV%": 12.0,
+        "ORB%": 25.0
       }
     },
   }) 
@@ -101,17 +104,17 @@ export default function App() {
               score:0, 
               values:{...previous.values, 
                 basic:{
-                  "FG%":results.data[order[teamName]][1], 
-                  "3P%":results.data[order[teamName]][2],
-                  "FT%":results.data[order[teamName]][3],
+                  "FG%":Number(results.data[order[teamName]][1]), 
+                  "3P%":Number(results.data[order[teamName]][2]),
+                  "FT%":Number(results.data[order[teamName]][3]),
                 }, advanced: {
-                  "Pace":results.data[order[teamName]][4], 
-                  "FTr%":results.data[order[teamName]][5],
-                  "3PAr%":results.data[order[teamName]][6],
-                  "AST%":results.data[order[teamName]][7],
-                  "BLK%":results.data[order[teamName]][8],
-                  "TOV%":results.data[order[teamName]][9],
-                  "ORB%":results.data[order[teamName]][10],
+                  "Pace":Number(results.data[order[teamName]][4]), 
+                  "FTr":Number(results.data[order[teamName]][5]),
+                  "3PAr":Number(results.data[order[teamName]][6]),
+                  "AST%":Number(results.data[order[teamName]][7]),
+                  "BLK%":Number(results.data[order[teamName]][8]),
+                  "TOV%":Number(results.data[order[teamName]][9]),
+                  "ORB%":Number(results.data[order[teamName]][10]),
                 }
               }}
           })
@@ -125,17 +128,17 @@ export default function App() {
               score:0, 
               values:{...previous.values, 
                 basic:{
-                  "FG%":results.data[order[teamName]][1], 
-                  "3P%":results.data[order[teamName]][2],
-                  "FT%":results.data[order[teamName]][3],
+                  "FG%":Number(results.data[order[teamName]][1]), 
+                  "3P%":Number(results.data[order[teamName]][2]),
+                  "FT%":Number(results.data[order[teamName]][3]),
                 }, advanced: {
-                  "Pace":results.data[order[teamName]][4], 
-                  "FTr%":results.data[order[teamName]][5],
-                  "3PAr%":results.data[order[teamName]][6],
-                  "AST%":results.data[order[teamName]][7],
-                  "BLK%":results.data[order[teamName]][8],
-                  "TOV%":results.data[order[teamName]][9],
-                  "ORB%":results.data[order[teamName]][10],
+                  "Pace":Number(results.data[order[teamName]][4]), 
+                  "FTr":Number(results.data[order[teamName]][5]),
+                  "3PAr":Number(results.data[order[teamName]][6]),
+                  "AST%":Number(results.data[order[teamName]][7]),
+                  "BLK%":Number(results.data[order[teamName]][8]),
+                  "TOV%":Number(results.data[order[teamName]][9]),
+                  "ORB%":Number(results.data[order[teamName]][10]),
                 }
               }}
           })
@@ -148,21 +151,24 @@ export default function App() {
   const startGame = () => {
     plays.clearPlays()
 
-    console.log([away.values.basic, away.values.advanced], [home.values.basic, home.values.advanced])
+    console.log([{...away.values.basic, School:away.name}, away.values.advanced], [{...home.values.basic, School:home.name}, home.values.advanced])
 
-    let [ta, tb] = simGame([{...away.values.basic, name:away.name}, away.values.advanced], [{...home.values.basic, name:home.name}, home.values.advanced])
+    let [ta, tb, total_posessions] = simGame([{...away.values.basic, School:away.name}, away.values.advanced], [{...home.values.basic, School:home.name}, home.values.advanced])
     setAway((previous)=>{
       return {...previous, 
-        stats: ta
+        stats: ta,
+        score: ta.points
+  
       }
     })
     setHome((previous)=>{
       return {...previous, 
-        stats: tb
+        stats: tb,
+        score: tb.points,
+        total_posessions:total_posessions
       }
     })
-    console.log(ta)
-    console.log(tb)
+    
     
   }
   const reset = () => {
