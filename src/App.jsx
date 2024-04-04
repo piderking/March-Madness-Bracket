@@ -3,7 +3,7 @@ import {Scoreboard} from "./scoreboard"
 import {Playbyplay} from "./playbyplay"
 import { useState, useEffect } from "react"
 import {readRemoteFile} from 'react-papaparse'
-
+import { simGame } from "./simulation"
 
 import { plays } from './playbyplay'
 
@@ -42,13 +42,17 @@ export default function App() {
     row:1,
     score:99,
     values:{
-      "FG%": .500,
-      "3P%": .380,
-      "Pace": 75.0,
-      "3PAr": .400,
-      "AST%":50.0,
-      "BLK%":8.0,
-      "TOV%": 12.0,
+      basic: {
+        "FG%": .500,
+        "3P%": .380,
+        "FT%": .4,
+      }, advanced: {
+        "Pace": 75.0,
+        "3PAr": .400,
+        "AST%":50.0,
+        "BLK%":8.0,
+        "TOV%": 12.0,
+      }
     },
     data:{
       posessions:0,
@@ -60,13 +64,17 @@ export default function App() {
     row:2,
     score:99,
     values:{
-      "FG%": .500,
-      "3P%": .380,
-      "Pace": 75.0,
-      "3PAr": .400,
-      "AST%":50.0,
-      "BLK%":8.0,
-      "TOV%": 12.0,
+      basic: {
+        "FG%": .500,
+        "3P%": .380,
+        "FT%": .4,
+      }, advanced: {
+        "Pace": 75.0,
+        "3PAr": .400,
+        "AST%":50.0,
+        "BLK%":8.0,
+        "TOV%": 12.0,
+      }
     },
   }) 
   useEffect(()=>{
@@ -87,13 +95,49 @@ export default function App() {
         plays.clearPlays()
         if(isHome){
           setHome((previous)=>{
-            return {...previous, name:teamName, row:order[teamName], score:0, values:{...previous.values, "FG%":results.data[order[teamName]+1][1], "3P%":results.data[order[teamName]+1][2]}}
+            return {...previous, 
+              name:teamName, 
+              row:order[teamName],
+              score:0, 
+              values:{...previous.values, 
+                basic:{
+                  "FG%":results.data[order[teamName]][1], 
+                  "3P%":results.data[order[teamName]][2],
+                  "FT%":results.data[order[teamName]][3],
+                }, advanced: {
+                  "Pace":results.data[order[teamName]][4], 
+                  "FTr%":results.data[order[teamName]][5],
+                  "3PAr%":results.data[order[teamName]][6],
+                  "AST%":results.data[order[teamName]][7],
+                  "BLK%":results.data[order[teamName]][8],
+                  "TOV%":results.data[order[teamName]][9],
+                  "ORB%":results.data[order[teamName]][10],
+                }
+              }}
           })
           
         }else{
         
           setAway((previous)=>{
-            return {...previous, name:teamName, row:order[teamName], score:0, values:{...previous.values, "FG%":results.data[order[teamName]+1][1], "3P%":results.data[order[teamName]+1][2]}}
+            return {...previous, 
+              name:teamName, 
+              row:order[teamName],
+              score:0, 
+              values:{...previous.values, 
+                basic:{
+                  "FG%":results.data[order[teamName]][1], 
+                  "3P%":results.data[order[teamName]][2],
+                  "FT%":results.data[order[teamName]][3],
+                }, advanced: {
+                  "Pace":results.data[order[teamName]][4], 
+                  "FTr%":results.data[order[teamName]][5],
+                  "3PAr%":results.data[order[teamName]][6],
+                  "AST%":results.data[order[teamName]][7],
+                  "BLK%":results.data[order[teamName]][8],
+                  "TOV%":results.data[order[teamName]][9],
+                  "ORB%":results.data[order[teamName]][10],
+                }
+              }}
           })
         }
       },
@@ -104,13 +148,21 @@ export default function App() {
   const startGame = () => {
     plays.clearPlays()
 
-    console.log(plays.data)
+    console.log([away.values.basic, away.values.advanced], [home.values.basic, home.values.advanced])
 
-    // for loop
-    for(let i=0; i<val; i++){
-      plays.data.push({team:home.name, text:getRandomScore()+" "+home.values["FG%"]+" "+home.row})
-    }
-    val -= 1
+    let [ta, tb] = simGame([{...away.values.basic, name:away.name}, away.values.advanced], [{...home.values.basic, name:home.name}, home.values.advanced])
+    setAway((previous)=>{
+      return {...previous, 
+        stats: ta
+      }
+    })
+    setHome((previous)=>{
+      return {...previous, 
+        stats: tb
+      }
+    })
+    console.log(ta)
+    console.log(tb)
     
   }
   const reset = () => {
