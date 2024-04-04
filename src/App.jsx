@@ -36,7 +36,7 @@ export default function App() {
       });
     },
     })}
-
+  
   const [home, setHome] = useState({
     name: "",
     row:1,
@@ -51,7 +51,8 @@ export default function App() {
       "TOV%": 12.0,
     },
     data:{
-      
+      posessions:0,
+      total_posessions:0,
     }
   }) 
   const [away, setAway] = useState({
@@ -72,22 +73,34 @@ export default function App() {
     // Run Once
     handleBasicFiles()
   }, [])
-  const changeTeam = (homeTeam, awayTeam) =>{
+  const changeTeam = (isHome, teamName) =>{
+    console.log(teamName)
+    if(order[teamName] === undefined || teamName === home.name || teamName === away.name ){
+      if(teamName === home.name || teamName === away.name){
+        alert("new name is the same as an exisiting one")
+      }
+      console.log("Unknown")
+      return
+    }
     readRemoteFile('./March-Madness-Bracket/data.csv', {
       complete: (results) => {
-      
-        setHome(previousState => {
-          return { ...previousState, name:homeTeam, row:order[homeTeam], score:0 }
-        });
-        setAway(previousState => {
-          return { ...previousState, name:awayTeam, row:order[awayTeam], score:0 }
-        });
+        plays.clearPlays()
+        if(isHome){
+          setHome((previous)=>{
+            return {...previous, name:teamName, row:order[teamName], score:0, values:{...previous.values, "FG%":results.data[order[teamName]+1][1], "3P%":results.data[order[teamName]+1][2]}}
+          })
+          
+        }else{
+        
+          setAway((previous)=>{
+            return {...previous, name:teamName, row:order[teamName], score:0, values:{...previous.values, "FG%":results.data[order[teamName]+1][1], "3P%":results.data[order[teamName]+1][2]}}
+          })
+        }
       },
       })
+      
   }
-  const change = () => {
-    changeTeam(document.getElementById("homeTeam").value, document.getElementById("awayTeam").value)
-  }
+  
   const startGame = () => {
     plays.clearPlays()
 
@@ -95,7 +108,7 @@ export default function App() {
 
     // for loop
     for(let i=0; i<val; i++){
-      plays.data.push({team:home.name, text:getRandomScore()})
+      plays.data.push({team:home.name, text:getRandomScore()+" "+home.values["FG%"]+" "+home.row})
     }
     val -= 1
     
@@ -115,25 +128,31 @@ export default function App() {
             <div className="flex-inital text-center w-96 flex flex-col">
               
               <div className="flex-1"></div>
-              <div className="flex-1">
-                <button onClick={startGame} >{'Run'}</button>
-                <button onClick={reset} className="pl-4">{'Reset'}</button>
-                <button onClick={change} className="pl-4">{'Change Team'}</button>
+              <div className="flex-1 flex flex-row">
+                <div className="flex-1">
+                  <button onClick={startGame} className="rounded-md bg-slate-200 p-2" >{'Run'}</button>
+                </div>
+                <div className="flex-1">
+                  <button onClick={reset} className="rounded-md bg-slate-200 p-2">{'Reset'}</button>
+
+                </div>
+                
               </div>
-              <div className="flex-1 text-left">
-                <label className="pr-2">
+              <div className="flex-1 text-left flex flex-col bg-slate-400 rounded-md">
+                <label className="ml-2 pr-2 pt-2 flex-1">
                   Away: 
-                  <input id="awayTeam" />
+                  <input id="awayTeam" onChange={e => {changeTeam(false, e.target.value)}} className=" bg-slate-200 w-80 rounded-sm"/>
                 </label>
                 <hr />
-                <label className="pr-2">
+                <label className="pr-2 ml-2 mt-1 flex-1">
                   Home: 
-                  <input id="homeTeam" />
+                  <input id="homeTeam"onChange={e => {changeTeam(true, e.target.value)}} className=" bg-slate-200 w-80 rounded-sm" />
                 </label>
               </div>
             </div>
             <div className="flex-1"></div>
           </div>
+          <div className="flex-inital h-10"></div>
           <div className="flex-inital h-56 flex flex-row">
               <div className="flex-1"></div>
               <div className="flex-inital w-[45vw]  flex flex-row outline rounded-2xl outline-slate-300 outline-[1px]">
@@ -186,7 +205,7 @@ export default function App() {
           <div className="flex-inital h-8"></div>
     
         </div>
-        <Playbyplay home={home} away={away}/>
+        <Playbyplay home={home} away={away} />
         
       
 

@@ -22,7 +22,17 @@ export function Scoreboard({children, home, away}) {
       
     return (
         <div className="flex-3 border-t-[1px] border-slate-200 flex flex-row">
-            <div className="flex-inital w-12"></div>
+            <div className="flex-inital w-12">
+                <div className="rounded-br-lg flex flex-col font-semibold bg-slate-300 absolute h-[10vh] w-[14vh] left-0 top-0">
+                    <div className="flex-1"></div>
+                    <div className="flex-1 text-center text-[2vh]">
+                        Possessions
+                        <br />
+                        {home.data.posessions}/{home.data.total_posessions}
+                    </div>
+                    <div className="flex-1"></div>
+                </div>
+            </div>
             <div className="flex-1 flex flex-row">
                 <div className="flex-1"></div>
                 <div className="flex-inital w-[40vw] flex flex-col ">

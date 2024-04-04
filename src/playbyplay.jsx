@@ -61,7 +61,6 @@ export function Playbyplay({_children, home, away}){
                 if (plays.data.length > children.length ){
                     addComponent() // If there's more plays then add them
                 }
-                console.log("Plays " + plays.data.length + " Children " + children.length )
 
         }, 1000);
  
